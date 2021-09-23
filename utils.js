@@ -79,6 +79,7 @@ function getNoteWeight(i, slider) {
     if (sliderValue < 1-noteWeight) return 0;
 
 
+
     return easeInOutCubic(mapAndClamp(sliderValue, 1-noteWeight, 1, 0, 1))
 }
 
@@ -93,6 +94,7 @@ const fullRotation = Math.PI * 2;
 // Half rotation
 // in radians, handy to store these in readable variables
 const halfRotation = Math.PI;
+
 
 // Ease in out cubic
 // Easings specify the rate at which an animation happens over time.

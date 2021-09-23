@@ -41,6 +41,7 @@ h1 {
 }
 
 .controls {
+    display: block;
     width: 100%;
 }
 .container {
