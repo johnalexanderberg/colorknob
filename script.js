@@ -6,7 +6,7 @@ const label = document.querySelector('#color_value');
 const notes = [];
 const noteLabels = [];
 
-const numberOfNotes = 25;
+const numberOfNotes = 13;
 
 
 createNotes();
