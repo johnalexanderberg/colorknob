@@ -19,10 +19,10 @@ colors = [
 
 ]
 
-const major = [
+const scale = [
     {
         key: 'C',
-        weight: 8/8,
+        weight: 8 / 8,
     },
     {
         key: 'C#',
@@ -30,7 +30,7 @@ const major = [
     },
     {
         key: 'D',
-        weight: 6/8
+        weight: 6 / 8
     },
     {
         key: 'D#',
@@ -38,19 +38,19 @@ const major = [
     },
     {
         key: 'E',
-        weight: 3/8
+        weight: 3 / 8
     },
     {
         key: 'F',
-        weight: 7/8
+        weight: 7 / 8
     },
     {
         key: 'F#',
-        weight: 4/8
+        weight: 0
     },
     {
         key: 'G',
-        weight: 1/8
+        weight: 1 / 8
     },
     {
         key: 'G#',
@@ -58,7 +58,7 @@ const major = [
     },
     {
         key: 'A',
-        weight: 5/8
+        weight: 5 / 8
     },
     {
         key: 'A#',
@@ -66,34 +66,31 @@ const major = [
     },
     {
         key: 'B',
-        weight: 2/8
+        weight: 2 / 8
     }
 ]
 
 function getNoteWeight(i, slider) {
 
-    const noteWeight = major[i].weight
-    const sliderValue = slider.value / slider.max
+
+    const noteWeight = scale[i].weight
+    
+    t = mapAndClamp(slider.value / slider.max, 0, 1, 0, 2)
+
 
     if (noteWeight === 0) return 0;
-    if (sliderValue < 1-noteWeight) return 0;
 
+    const path1 = (mapAndClamp(t - (1 - noteWeight), 0, 1, 0, noteWeight + (1 - noteWeight)));
 
+    const path2 = (mapAndClamp(t, 1, 2, noteWeight, 1));
 
-    return easeInOutCubic(mapAndClamp(sliderValue, 1-noteWeight, 1, 0, 1))
+    if (slider.value / slider.max < 0.5) {
+        return path1
+    } else {
+        return path2
+    }
+
 }
-
-
-
-
-
-// Full rotation
-// in radians, handy to store these in readable variables
-const fullRotation = Math.PI * 2;
-
-// Half rotation
-// in radians, handy to store these in readable variables
-const halfRotation = Math.PI;
 
 
 // Ease in out cubic
@@ -105,9 +102,6 @@ function easeInOutCubic(t) {
 }
 
 // Clamp
-// Takes a value, a min and a max, if the value is less than the min
-// it will set the value to the min and if the value is greater than
-// the max it will set the value to the max
 // e.g. clamp(11, 0, 10) would return 10
 // e.g. clamp(9, 0, 10) would return 9
 function clamp(input, min, max) {
@@ -133,18 +127,4 @@ function mapAndClamp(value, low1, high1, low2, high2) {
         Math.min(low2, high2),
         Math.max(low2, high2)
     )
-}
-
-// Random number within range
-// Generates a random-placement number between min and max rounded
-// e.g. randomNumber(10, 20) could return 17.12335
-function randomNumber(min, max) {
-    return Math.random() * (max - min) + min
-}
-
-// Random number within range
-// Generates a random-placement number between min and max rounded
-// e.g. randomRoundNumber(10, 20) could return 17
-function randomRoundNumber(min, max) {
-    return Math.round(randomNumber(min, max))
 }

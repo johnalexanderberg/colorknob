@@ -32,7 +32,7 @@ function createNote(i) {
 function createNotes() {
     for (let i = 0; i < numberOfNotes; i++) {
 
-        const note = createNote(numberOfNotes - i - 1)
+        const note = createNote(i)
         container.appendChild(note)
         notes.push(note)
     }
@@ -41,37 +41,36 @@ function createNotes() {
 //on update
 
 function updateNote() {
-
-
-    let sum = 0;
-    let distribution = [];
-
-
+console.log(slider.value)
     let distributionString = "";
+
     for (let i = 0; i < numberOfNotes; i++) {
 
+        let noteWeight;
 
+        //use counter to map i to note in octave
         const counter = i % 12
-        let noteWeight = 1;
 
-        if (major[counter].weight === 0) {
+        //ignore notes outside of scale
+        if (scale[counter].weight === 0) {
             notes[i].style.display = 'none'
             continue
         }
 
         //if counter is 0, the current note is root
-        if (counter !== 0) {
+        if (counter === 0) {
+            noteWeight = 1;
 
+        } else {
             noteWeight = getNoteWeight(counter, slider);
-            sum += noteWeight;
+            noteLabels[i].textContent = noteName[i];
 
             if (noteWeight < 0.05) {
                 noteLabels[i].style.display = 'none'
             } else {
                 noteLabels[i].style.display = 'block'
             }
-        } else {
-        // do nothing (let root note have weight 1)
+
 
         }
 
@@ -105,6 +104,7 @@ function alignLabels() {
 
 const onChangeHandler = () => {
     label.textContent = Math.round(slider.value / slider.max * 100) + '%';
+    console.log(slider.value)
     updateNote()
 }
 
@@ -114,9 +114,7 @@ const onResizeHandler = () => {
 
 slider.addEventListener('input', onChangeHandler);
 
-console.log(body)
 body.onresize = onResizeHandler;
 
 
-console.log(slider)
 
